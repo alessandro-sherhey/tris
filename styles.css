@@ -32,6 +32,8 @@ h1 {
     align-items: center;
     justify-content: center;
     font-weight: bold;
+
+    color: white;
 }
 
 .cells:hover {
@@ -39,5 +41,9 @@ h1 {
 }
 
 .cells.playerSelected {
+    background-color: rgb(255, 0, 0);
+}
+
+.cells.aiSelected {
     background-color: rgb(0, 174, 255);
 }
