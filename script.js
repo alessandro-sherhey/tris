@@ -1,75 +1,122 @@
-const ff = document.getElementById("1-1");
-const fs = document.getElementById("1-2");
-const ft = document.getElementById("1-3");
-const sf = document.getElementById("2-1");
-const ss = document.getElementById("2-2");
-const st = document.getElementById("2-3");
-const tf = document.getElementById("3-1");
-const ts = document.getElementById("3-2");
-const tt = document.getElementById("3-3");
-
+const cells = document.getElementsByClassName("cells");
 const message = document.getElementById("message");
 
-const allButtons = [ff, fs, ft, sf, ss, st, tf, ts, tt];
+let playerArray = [];
+let aiArray = [];
 
-const winningPatterns = [
-    [0,1,2],
-    [3,4,5],
-    [6,7,8],
-    [0,3,6],
-    [1,4,7],
-    [2,5,8],
-    [0,4,8],
-    [2,4,6]
-]
-
-const playerCells = [];
-const aiCells = [];
-
+/* Bad way of checking if the match ended, but it works :) */
 const checkEnding = () => {
-    for (let i = 0; i < winningPatterns.length; i++) {
-        let patternToCheck = winningPatterns[i];
+    let playerContainsZero = playerArray.includes("0");
+    let playerContainsOne = playerArray.includes("1");
+    let playerContainsTwo = playerArray.includes("2");
+    let playerContainsThree = playerArray.includes("3");
+    let playerContainsFour = playerArray.includes("4");
+    let playerContainsFive = playerArray.includes("5");
+    let playerContainsSix = playerArray.includes("6");
+    let playerContainsSeven = playerArray.includes("7");
+    let playerContainsEight = playerArray.includes("8");
 
-        patternToCheck = patternToCheck.replace('[', '');
-        patternToCheck = patternToCheck.replace(']', '');
+    if (
+        ( playerContainsZero && playerContainsOne && playerContainsTwo ) ||
+        ( playerContainsThree && playerContainsFour && playerContainsFive) ||
+        ( playerContainsSix && playerContainsSeven && playerContainsEight) ||
+        ( playerContainsZero && playerContainsThree && playerContainsSix) ||
+        ( playerContainsOne && playerContainsFour && playerContainsSeven) ||
+        ( playerContainsTwo && playerContainsFive && playerContainsEight) ||
+        ( playerContainsZero &&  playerContainsFour && playerContainsEight) ||
+        ( playerContainsTwo && playerContainsFour && playerContainsSix)
+    ) {
+        message.innerHTML = "Player won!";
+    }
 
-        if (playerCells.includes(patternToCheck)) {
-            message.innerHTML = "Hai vinto!";
-        } else if (aiCells.includes(patternToCheck)) {
-            message.innerHTML = "Hai perso!";
-        }
+    let aiContainsZero = aiArray.includes(0);
+    let aiContainsOne = aiArray.includes(1);
+    let aiContainsTwo = aiArray.includes(2);
+    let aiContainsThree = aiArray.includes(3);
+    let aiContainsFour = aiArray.includes(4);
+    let aiContainsFive = aiArray.includes(5);
+    let aiContainsSix = aiArray.includes(6);
+    let aiContainsSeven = aiArray.includes(7);
+    let aiContainsEight = aiArray.includes(8);
+
+    console.log(aiContainsZero);
+
+    if (
+        ( aiContainsZero && aiContainsOne && aiContainsTwo) ||
+        ( aiContainsThree && aiContainsFour && aiContainsFive) ||
+        ( aiContainsSix && aiContainsSeven && aiContainsEight) ||
+        ( aiContainsZero && aiContainsThree && aiContainsSix) ||
+        ( aiContainsOne && aiContainsFour && aiContainsSeven) ||
+        ( aiContainsTwo && aiContainsFive && aiContainsEight) ||
+        ( aiContainsZero &&  aiContainsFour && aiContainsEight) ||
+        ( aiContainsTwo && aiContainsFour && aiContainsSix)
+    ) {
+        message.innerHTML = "AI won!";
     }
 }
 
-const computerSelect = () => {
-    const selected = false;
+/* Function for making the AI select a cell.
+Includes a failsafe against infinite loops and checks if the selected cell wasn't already
+selected by the player or the AI itself. */
+
+const aiSelect = () => {
+    let selected = false;
+    let tests = 0;  // failsafe against infinite loop
 
     while (selected === false) {
-        const randomInt = Math.floor(Math.random() * 8);
-        const randomCell = allButtons[randomInt];
+        if (tests <= 9) {
+            let randomInt = Math.floor(Math.random() * 8);
+            let selectedCell = document.getElementById(randomInt);
 
-        if (randomCell.classList.contains("playerSelected") == false) {
-            // checkEnding();
-            randomCell.innerHTML = "O";
-            randomCell.classList.add("aiSelected");
+            if ((!selectedCell.classList.contains("playerSelected")) && (!selectedCell.classList.contains("aiSelected"))) {
+                selectedCell.classList.add("aiSelected");
+                selectedCell.innerHTML = "O";
+                
+                console.log(`✅ Cell ${randomInt} selected!`);
+                
+                aiArray.push(randomInt);
 
-            aiCells.push(randomInt);
+                checkEnding();
 
+                console.log(`AI Array: ${aiArray}`);
+
+                selected = true;
+                tests = 0;
+            } else {
+                console.log(`❌ Tried cell ${randomInt}`);
+                tests++;
+            }
+
+        } else {
+            console.log(`⚠️ Tried more than 9 times. Match is probably finished.`);
+            console.log(`✅ Changed "selected" to true to end infinite loop.`)
             selected = true;
         }
     }
+ }
+
+
+// assigns an unique id (from 0 to 8) to each cell
+const initializeGame = () => {
+    let i = 0;
+
+    for (const cell of cells) {
+        cell.setAttribute("id", i);
+
+        cell.addEventListener("click", () => {
+            if ((!cell.classList.contains("playerSelected")) && (!cell.classList.contains("aiSelected"))) {
+                cell.innerHTML = "X";
+                cell.classList.add("playerSelected");
+                playerArray.push(cell.id);
+                
+                checkEnding();
+                aiSelect();
+            } else {
+                console.log(`❌ Cell ${cell.id} was already selected!`);
+            }
+        });
+
+        i++;
+    }
 }
-
-for (let i = 0; i < allButtons.length; i++) {
-    allButtons[i].addEventListener("click", () => {
-        // checkEnding();
-
-        allButtons[i].classList.add("playerSelected");
-        allButtons[i].innerHTML = "X";
-
-        playerCells.push(i);
-        message.innerHTML = playerCells;
-
-        computerSelect();
-    })
-}
+initializeGame();
