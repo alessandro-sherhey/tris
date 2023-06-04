@@ -1,6 +1,8 @@
 const cells = document.getElementsByClassName("cells");
 const message = document.getElementById("message");
 
+let matchEnded = false;
+
 let playerArray = [];
 let aiArray = [];
 
@@ -27,7 +29,9 @@ const checkEnding = () => {
         ( playerContainsTwo && playerContainsFour && playerContainsSix)
     ) {
         message.innerHTML = "Player won!";
+        matchEnded = true;
     }
+
 
     let aiContainsZero = aiArray.includes(0);
     let aiContainsOne = aiArray.includes(1);
@@ -52,6 +56,7 @@ const checkEnding = () => {
         ( aiContainsTwo && aiContainsFour && aiContainsSix)
     ) {
         message.innerHTML = "AI won!";
+        matchEnded = true;
     }
 }
 
@@ -105,12 +110,16 @@ const initializeGame = () => {
 
         cell.addEventListener("click", () => {
             if ((!cell.classList.contains("playerSelected")) && (!cell.classList.contains("aiSelected"))) {
-                cell.innerHTML = "X";
-                cell.classList.add("playerSelected");
-                playerArray.push(cell.id);
-                
-                checkEnding();
-                aiSelect();
+                if (!matchEnded) {
+                    cell.innerHTML = "X";
+                    cell.classList.add("playerSelected");
+                    playerArray.push(cell.id);
+                    
+                    checkEnding();
+                    aiSelect();
+                } else {
+                    console.log(`❌ Match is already finished!`);
+                }
             } else {
                 console.log(`❌ Cell ${cell.id} was already selected!`);
             }
