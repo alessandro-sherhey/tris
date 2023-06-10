@@ -40,15 +40,38 @@
                 </div>
             </section>
             
-            <section id="turnIndicator">
-                
+            <section id="turnIndicator">                
             </section>
 
             <section id="message">
-                <h2>
-
-                </h2>
             </section>
+        </section>
+        <section id="settings">
+            <div id="players">
+                <h2><i class="fa-solid fa-users"></i> Players</h2>
+                <div>
+                    <button class="selected" id="onePlayer">1</button>
+                    <button id="twoPlayers">2</button>
+                </div>
+            </div>
+            <div id="colors">
+                <h2><i class="fa-solid fa-palette"></i> Colors</h2>
+                <div class="horizontal">
+                    <h3>Player</h3>
+                    <input type="color" id="playerColor">
+                </div>
+                <div class="horizontal">
+                    <h3>AI</h3>
+                    <input type="color" id="aiColor">
+                </div>
+            </div>
+            <div id="animations">
+                <h2><i class="fa-solid fa-star"></i> Animations</h2>
+                <div>
+                    <button id="noAnimations">Disable</button>
+                    <button class="selected" id="yesAnimations">Enable</button>
+                </div>
+            </div>
         </section>
     </body>
 </html>

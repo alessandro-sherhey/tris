@@ -1,14 +1,32 @@
+const style = getComputedStyle(document.body);
+
 const cells = document.getElementsByClassName("cells");
 const message = document.getElementById("message");
 const turnIndicator = document.getElementById("turnIndicator");
-const style = getComputedStyle(document.body);
+
+const onePlayer = document.getElementById("onePlayer");
+const twoPlayers = document.getElementById("twoPlayers");
+const playerColorInput = document.getElementById("playerColor");
+const aiColorInput = document.getElementById("aiColor");
+const noAnimations = document.getElementById("noAnimations");
+const yesAnimations = document.getElementById("yesAnimations");
 
 let matchEnded = false;
 let turn = 0; // 0: player's turn, 1: ai's turn
 
+let players = 1; // 1: use ai, 2: don't use ai
+let playerColor = style.getPropertyValue('--red');
+let aiColor = style.getPropertyValue('--blue');
+let animations = true;
+
 let playerArray = [];
 let aiArray = [];
 
+const updateColorSettings = () => {
+    playerColorInput.value = playerColor;
+    aiColorInput.value = aiColor;
+}
+updateColorSettings();
 
 // Changes turn indicator based on "turn" value
 const updateTurn = () => {
@@ -56,7 +74,9 @@ const checkEnding = () => {
         ( playerContainsZero &&  playerContainsFour && playerContainsEight) ||
         ( playerContainsTwo && playerContainsFour && playerContainsSix)
     ) {
-        message.innerHTML = "Player won!";
+        turnIndicator.style.display = 'none';
+        message.innerHTML = "<h2>Player won!</h2>";
+        message.style.color = style.getPropertyValue("--red");
         matchEnded = true;
     }
 
@@ -83,7 +103,9 @@ const checkEnding = () => {
         ( aiContainsZero && aiContainsFour && aiContainsEight) ||
         ( aiContainsTwo && aiContainsFour && aiContainsSix)
     ) {
-        message.innerHTML = "AI won!";
+        turnIndicator.style.display = 'none';
+        message.innerHTML = "<h2>AI won!</h2>";
+        message.style.color = style.getPropertyValue("--blue");
         matchEnded = true;
     }
 }
@@ -110,6 +132,8 @@ const aiSelect = () => {
                 aiArray.push(randomInt);
 
                 checkEnding();
+
+                turn = 0;
                 updateTurn();
 
                 console.log(`AI Array: ${aiArray}`);
@@ -143,10 +167,12 @@ const initializeGame = () => {
                     cell.innerHTML = "X";
                     cell.classList.add("playerSelected");
                     playerArray.push(cell.id);
+
+                    turn = 1;
+                    updateTurn();
                     
                     checkEnding();
                     aiSelect();
-                    updateTurn();
                 } else {
                     console.log(`❌ Match is already finished!`);
                 }
