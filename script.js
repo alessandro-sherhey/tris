@@ -1,10 +1,38 @@
 const cells = document.getElementsByClassName("cells");
 const message = document.getElementById("message");
+const turnIndicator = document.getElementById("turnIndicator");
+const style = getComputedStyle(document.body);
 
 let matchEnded = false;
+let turn = 0; // 0: player's turn, 1: ai's turn
 
 let playerArray = [];
 let aiArray = [];
+
+
+// Changes turn indicator based on "turn" value
+const updateTurn = () => {
+    if (turn === 0) {
+        turnIndicator.innerHTML = `
+        <h2>
+        <i class="fa-solid fa-circle fa-bounce" id="turnIcon"></i>
+        Your turn!
+        </h2>`;
+        const turnIcon = document.getElementById("turnIcon");
+        turnIcon.style.color = style.getPropertyValue('--red');
+        turnIcon.style.opacity = '1';
+    } else {
+        turnIndicator.innerHTML = `
+        <h2>
+        <i class="fa-solid fa-circle" id="turnIcon"></i>
+        AI turn!
+        </h2>`;
+        const turnIcon = document.getElementById("turnIcon");
+        turnIcon.style.color = style.getPropertyValue('--blue');
+        turnIcon.style.opacity = '0.5';
+    }
+}
+updateTurn();
 
 /* Bad way of checking if the match ended, but it works :) */
 const checkEnding = () => {
@@ -82,6 +110,7 @@ const aiSelect = () => {
                 aiArray.push(randomInt);
 
                 checkEnding();
+                updateTurn();
 
                 console.log(`AI Array: ${aiArray}`);
 
@@ -117,6 +146,7 @@ const initializeGame = () => {
                     
                     checkEnding();
                     aiSelect();
+                    updateTurn();
                 } else {
                     console.log(`❌ Match is already finished!`);
                 }

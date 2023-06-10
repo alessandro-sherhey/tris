@@ -1,3 +1,8 @@
+:root {
+    --blue: rgb(0, 174, 255);
+    --red: rgb(255, 0, 0);
+}
+
 body {
     font-family: system-ui;
     text-align: center;
@@ -42,11 +47,15 @@ h1 {
 }
 
 .cells.playerSelected {
-    background-color: rgb(255, 0, 0);
+    background-color: var(--red);
 }
 
 .cells.aiSelected {
-    background-color: rgb(0, 174, 255);
+    background-color: var(--blue);
+}
+
+#turnIndicator i {
+    margin-right: 10px;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -64,10 +73,10 @@ h1 {
     }
 
     .cells.playerSelected:hover {
-        background-color: rgb(255, 0, 0);
+        background-color: var(--red);
     }
 
     .cells.aiSelected:hover {
-        background-color: rgb(0, 174, 255);
+        background-color: var(--blue);
     }
 }
