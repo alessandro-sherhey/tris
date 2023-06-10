@@ -22,20 +22,67 @@ let animations = true;
 let playerArray = [];
 let aiArray = [];
 
+// Updates values in the color inputs with the ones found in the CSS variables
 const updateColorSettings = () => {
     playerColorInput.value = playerColor;
     aiColorInput.value = aiColor;
 }
 updateColorSettings();
 
+onePlayer.addEventListener("click", () => {
+    if (players != 1) {
+        players = 1;
+        onePlayer.classList.add("selected");
+        twoPlayers.classList.remove("selected");
+    }
+})
+
+twoPlayers.addEventListener("click", () => {
+    if (players != 2) {
+        players = 2;
+        onePlayer.classList.remove("selected");
+        twoPlayers.classList.add("selected");
+    }
+})
+
+yesAnimations.addEventListener("click", () => {
+    if (animations != true) {
+        animations = true;
+        yesAnimations.classList.add("selected");
+        noAnimations.classList.remove("selected");
+
+        const turnIcon = document.getElementById("turnIcon");
+        turnIcon.classList.add("fa-bounce");
+    }
+})
+
+noAnimations.addEventListener("click", () => {
+    if (animations != false) {
+        animations = false;
+        yesAnimations.classList.remove("selected");
+        noAnimations.classList.add("selected");
+
+        const turnIcon = document.getElementById("turnIcon");
+        turnIcon.classList.remove("fa-bounce");
+    }
+})
+
 // Changes turn indicator based on "turn" value
 const updateTurn = () => {
     if (turn === 0) {
-        turnIndicator.innerHTML = `
-        <h2>
-        <i class="fa-solid fa-circle fa-bounce" id="turnIcon"></i>
-        Your turn!
-        </h2>`;
+        if (animations == true) {
+            turnIndicator.innerHTML = `
+            <h2>
+            <i class="fa-solid fa-circle fa-bounce" id="turnIcon"></i>
+            Your turn!
+            </h2>`;
+        } else {
+            turnIndicator.innerHTML = `
+            <h2>
+            <i class="fa-solid fa-circle" id="turnIcon"></i>
+            Your turn!
+            </h2>`;
+        }
         const turnIcon = document.getElementById("turnIcon");
         turnIcon.style.color = style.getPropertyValue('--red');
         turnIcon.style.opacity = '1';

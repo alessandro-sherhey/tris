@@ -20,6 +20,11 @@ h3 {
     font-weight: normal;
 }
 
+input[type="color"] {
+    border: none;
+    height: 27px;
+}
+
 #grid {
     display: flex;
     flex-direction: column;
@@ -96,15 +101,32 @@ h3 {
 #settings button {
     font-size: 1rem;
     margin: 5px 5px;
-    padding: 3px 10px;
+    padding: 4px 12px;
     background-color: rgba(240, 240, 240, 1);
-    border: 1px solid rgba(230,230,230,1);
+    border: none;
     border-radius: 10px;
+
+    transition: 100ms ease;
+}
+
+#settings button:hover {
+    cursor: pointer;
+    background-color: rgba(230,230, 230, 1);
+
+    transition: 100ms ease;
+}
+
+#settings button.selected:hover {
+    background-color: rgb(0, 106, 255);
+}
+
+#settings button:active {
+    scale: 0.9;
+    transition: 100ms ease;
 }
 
 #settings button.selected {
     color: white;
-    border: 1px solid rgb(0, 106, 255);
     background-color: rgb(0, 106, 255);
 }
 
