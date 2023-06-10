@@ -52,7 +52,7 @@ const checkEnding = () => {
         ( aiContainsZero && aiContainsThree && aiContainsSix) ||
         ( aiContainsOne && aiContainsFour && aiContainsSeven) ||
         ( aiContainsTwo && aiContainsFive && aiContainsEight) ||
-        ( aiContainsZero &&  aiContainsFour && aiContainsEight) ||
+        ( aiContainsZero && aiContainsFour && aiContainsEight) ||
         ( aiContainsTwo && aiContainsFour && aiContainsSix)
     ) {
         message.innerHTML = "AI won!";
@@ -101,7 +101,7 @@ const aiSelect = () => {
  }
 
 
-// assigns an unique id (from 0 to 8) to each cell
+// Assigns an unique id (from 0 to 8) to each cell
 const initializeGame = () => {
     let i = 0;
 
